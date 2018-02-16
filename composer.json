@@ -1,0 +1,18 @@
+{
+  "name": "mantoani/solr",
+  "description": "[test] A very simple component to work with Solr and PHP",
+  "type": "library",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Eric Mantoani",
+      "email": "eu@eric.com.br"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Solr\\": "src/"
+    }
+  },
+  "require": {}
+}
