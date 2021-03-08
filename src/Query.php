@@ -40,6 +40,12 @@ class Query extends HttpRequest{
   var $hl;
   var $hlField;
   var $hlQ;
+  var $group;
+  var $groupField;
+  var $groupLimit;
+  var $groupOffset;
+  var $groupSort;
+
 
   function __construct($solrUrl){
     $this->reset();
@@ -200,16 +206,20 @@ class Query extends HttpRequest{
     $group = "";
     if(!empty($this->group)){
       $group .= "&group=".$this->group;
+      $group .= "&group.ngroups=true";
     }
-
     if(!empty($this->groupField)){
       $group .= "&group.field=".$this->groupField;
-
-      $group .= "&group.limit=".$this->rows;
-      $group .= "&group.offset=".$this->start;
-      $group .= "&group.sort=".urlencode($this->sort);
     }
-
+    if(!empty($this->groupLimit)){
+      $group .= "&group.limit=".$this->groupLimit;
+    }
+    if(!empty($this->groupOffset)){
+      $group .= "&group.offset=".$this->groupOffset;
+    }
+    if(!empty($this->groupSort)){
+      $group .= "&group.sort=".urlencode($this->groupSort);
+    }
     return $group;
   }
 
@@ -254,7 +264,5 @@ class Query extends HttpRequest{
     $this->hlField = "";
     $this->hlQ = "";
   }
-
 }
-
 ?>
