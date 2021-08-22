@@ -2,7 +2,7 @@
 	
 	require __DIR__."/../vendor/autoload.php";
 
-	$solrCore = "http://localhost:8983/solr/orders";
+	$solrCore = "http://localhost:8983/solr/wiki.pucminas";
 
 	$doc = new Solr\Document($solrCore);
 
