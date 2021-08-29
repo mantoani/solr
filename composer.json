@@ -1,6 +1,6 @@
 {
   "name": "mantoani/solr",
-  "description": "[test] A very simple component to work with Solr and PHP",
+  "description": "A simple component to work with Solr and PHP",
   "type": "library",
   "license": "GPL-3.0-or-later",
   "authors": [
