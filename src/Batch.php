@@ -32,6 +32,9 @@ class Batch extends Connection{
 
   function index($docs, $path){
     $content = json_encode($docs);
+		if(!file_exists($path)){
+			mkdir($path, 0755, true);
+		}
 		$path = $path."/batch.json";
 		$fopen = fopen($path, 'w+');
     $success = fwrite($fopen, $content);
