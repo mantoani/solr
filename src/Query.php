@@ -33,6 +33,8 @@ class Query extends HttpRequest{
   var $wt = "json";
   var $facet;
   var $facetField;
+  var $facetMinCount;
+  var $facetLimit;
   var $facetQuery;
   var $sfield;
   var $pt;
@@ -193,6 +195,14 @@ class Query extends HttpRequest{
 
     if(!empty($this->facetField)){
       $facet .= "&facet.field=".$this->facetField;
+    }
+
+    if(!empty($this->facetMinCount)){
+      $facet .= "&facet.mincount=".$this->facetMinCount;
+    }
+
+    if(!empty($this->facetLimit)){
+      $facet .= "&facet.limit=".$this->facetLimit;
     }
 
     if(!empty($this->facetQuery)){
