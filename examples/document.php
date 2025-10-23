@@ -1,13 +1,11 @@
 <?php
-	
-	require __DIR__."/../vendor/autoload.php";
 
-	$solrCore = "http://localhost:8983/solr/wiki.pucminas";
+require __DIR__ . "/../vendor/autoload.php";
 
-	$doc = new Solr\Document($solrCore);
+$solrCore = "http://localhost:8983/solr/orders";
 
-	$doc->addField('name', 'value');
+$doc = new Solr\Document($solrCore);
 
-	print_r($doc);
+$doc->addField('name', 'value');
 
-?>
+print_r($doc);
