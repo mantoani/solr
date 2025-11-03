@@ -23,9 +23,6 @@ use \stdClass;
 class Document extends Connection
 {
 
-	var $sortDate;
-	var $hour;
-
 	function __construct($url)
 	{
 		parent::setUrl($url);
