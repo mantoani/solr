@@ -20,7 +20,8 @@ namespace Solr;
 
 use Solr\HttpRequest;
 
-class Query extends HttpRequest{
+class Query extends HttpRequest
+{
 
   var $solrUrl;
 
@@ -47,24 +48,28 @@ class Query extends HttpRequest{
   var $groupLimit;
   var $groupOffset;
   var $groupSort;
+  var $jsonFacet;
 
 
-  function __construct($solrUrl){
+  function __construct($solrUrl)
+  {
     $this->reset();
     $this->solrUrl = $solrUrl;
   }
 
-  function Search($Solr){
+  function Search($Solr)
+  {
     $this->reset();
-    foreach($Solr as $k => $v){
+    foreach ($Solr as $k => $v) {
       $this->$k = $v;
     }
 
     return $this->query();
   }
 
-  function query(){
-    $url = $this->solrUrl."/select/";
+  function query()
+  {
+    $url = $this->solrUrl . "/select/";
     $url .= $this->q();
     $url .= $this->fq();
     $url .= $this->sort();
@@ -80,13 +85,14 @@ class Query extends HttpRequest{
     $url .= $this->hl();
     $url .= $this->hlField();
     $url .= $this->hlQ();
+    $url .= $this->jsonFacet();
 
     $Response = new parent("get", $url);
 
-    if(isset($_GET['debugg'])){
+    if (isset($_GET['debugg'])) {
       debugg($Response);
       debugg($Response->getResponse());
-      echo '<pre><a href="'.$url.'" target="_blank">'.$url.'</a><br /><br /></pre>';
+      echo '<pre><a href="' . $url . '" target="_blank">' . $url . '</a><br /><br /></pre>';
     }
 
     // echo $url; exit;
@@ -95,171 +101,203 @@ class Query extends HttpRequest{
     return json_decode($Response->getResponse());
   }
 
-  function q(){
-    if(empty($this->q)){
+  function q()
+  {
+    if (empty($this->q)) {
       return "?q=*";
     }
 
-    return "?q=".urlencode($this->q);
+    return "?q=" . urlencode($this->q);
   }
 
-  function fq(){
-    if(empty($this->fq)){
+  function fq()
+  {
+    if (empty($this->fq)) {
       return "";
     }
 
-    return "&fq=".urlencode($this->fq);
+    return "&fq=" . urlencode($this->fq);
   }
 
-  function start(){
-    return "&start=".$this->start;
+  function start()
+  {
+    return "&start=" . $this->start;
   }
 
-  function rows(){
-    return "&rows=".$this->rows;
+  function rows()
+  {
+    return "&rows=" . $this->rows;
   }
 
-  function fl(){
-    if(empty($this->fl)){
+  function fl()
+  {
+    if (empty($this->fl)) {
       return "";
     }
 
-    return "&fl=".$this->fl;
+    return "&fl=" . $this->fl;
   }
 
-  function sfield(){
-    if(empty($this->sfield)){
+  function sfield()
+  {
+    if (empty($this->sfield)) {
       return "";
     }
 
-    return "&sfield=".urlencode($this->sfield);
+    return "&sfield=" . urlencode($this->sfield);
   }
 
-  function pt(){
-    if(empty($this->pt)){
+  function pt()
+  {
+    if (empty($this->pt)) {
       return "";
     }
 
-    return "&pt=".urlencode($this->pt);
+    return "&pt=" . urlencode($this->pt);
   }
 
-  function d(){
-    if(empty($this->d)){
+  function d()
+  {
+    if (empty($this->d)) {
       return "";
     }
 
-    return "&d=".urlencode($this->d);
+    return "&d=" . urlencode($this->d);
   }
 
-  function hl(){
-    if(empty($this->hl)){
+  function hl()
+  {
+    if (empty($this->hl)) {
       return "";
     }
 
-    return "&hl=".urlencode($this->hl);
+    return "&hl=" . urlencode($this->hl);
   }
 
-  function hlQ(){
-    if(empty($this->hlQ)){
+  function hlQ()
+  {
+    if (empty($this->hlQ)) {
       return "";
     }
 
-    return "&hl.q=".urlencode($this->hlQ);
+    return "&hl.q=" . urlencode($this->hlQ);
   }
 
-  function hlField(){
-    if(empty($this->hlField)){
+  function hlField()
+  {
+    if (empty($this->hlField)) {
       return "";
     }
 
-    return "&hl.field=".urlencode($this->hlField);
+    return "&hl.field=" . urlencode($this->hlField);
   }
 
-  function wt(){
-    return "&wt=".$this->wt;
+  function wt()
+  {
+    return "&wt=" . $this->wt;
   }
 
-  function sort(){
-    if(empty($this->sort)){
+  function sort()
+  {
+    if (empty($this->sort)) {
       return "";
     }
 
-    return "&sort=".urlencode($this->sort);
+    return "&sort=" . urlencode($this->sort);
   }
 
-  function facet(){
+  function facet()
+  {
     $facet = "";
-    if(!empty($this->facet)){
-      $facet .= "&facet=".$this->facet;
+    if (!empty($this->facet)) {
+      $facet .= "&facet=" . $this->facet;
     }
 
-    if(!empty($this->facetField)){
-      $facet .= "&facet.field=".$this->facetField;
+    if (!empty($this->facetField)) {
+      $facet .= "&facet.field=" . $this->facetField;
     }
 
-    if(!empty($this->facetMinCount)){
-      $facet .= "&facet.mincount=".$this->facetMinCount;
+    if (!empty($this->facetMinCount)) {
+      $facet .= "&facet.mincount=" . $this->facetMinCount;
     }
 
-    if(!empty($this->facetLimit)){
-      $facet .= "&facet.limit=".$this->facetLimit;
+    if (!empty($this->facetLimit)) {
+      $facet .= "&facet.limit=" . $this->facetLimit;
     }
 
-    if(!empty($this->facetQuery)){
-      $facet .= "&facet.query=".$this->facetQuery;
+    if (!empty($this->facetQuery)) {
+      $facet .= "&facet.query=" . $this->facetQuery;
     }
 
     return $facet;
   }
 
-  function group(){
+  function group()
+  {
     $group = "";
-    if(!empty($this->group)){
-      $group .= "&group=".$this->group;
+    if (!empty($this->group)) {
+      $group .= "&group=" . $this->group;
       $group .= "&group.ngroups=true";
     }
-    if(!empty($this->groupField)){
-      $group .= "&group.field=".$this->groupField;
+    if (!empty($this->groupField)) {
+      $group .= "&group.field=" . $this->groupField;
     }
-    if(!empty($this->groupLimit)){
-      $group .= "&group.limit=".$this->groupLimit;
+    if (!empty($this->groupLimit)) {
+      $group .= "&group.limit=" . $this->groupLimit;
     }
-    if(!empty($this->groupOffset)){
-      $group .= "&group.offset=".$this->groupOffset;
+    if (!empty($this->groupOffset)) {
+      $group .= "&group.offset=" . $this->groupOffset;
     }
-    if(!empty($this->groupSort)){
-      $group .= "&group.sort=".urlencode($this->groupSort);
+    if (!empty($this->groupSort)) {
+      $group .= "&group.sort=" . urlencode($this->groupSort);
     }
     return $group;
   }
 
-  function _or($array){
+  function _or($array)
+  {
     $or = "";
-    foreach($array as $item){
-      if($item === reset($array)){
-        if(strlen($or) == 0){
+    foreach ($array as $item) {
+      if ($item === reset($array)) {
+        if (strlen($or) == 0) {
           $or .= $item;
         }
       } else {
-        $or .= " OR ".$item;
+        $or .= " OR " . $item;
       }
     }
 
     return $or;
   }
 
-  function fetchFacetResult($f){
+  function jsonFacet()
+  {
+    if (empty($this->jsonFacet)) {
+      return "";
+    }
+
+    // Aceita array (converte para JSON) ou string JSON direta
+    $json = is_array($this->jsonFacet)
+      ? json_encode($this->jsonFacet)
+      : $this->jsonFacet;
+
+    return "&json.facet=" . urlencode($json);
+  }
+
+  function fetchFacetResult($f)
+  {
     $Facet = new stdClass();
 
-    for($i=0; $i<count($f); $i++){
-      $Facet->$f[$i] = $f[$i+1];
+    for ($i = 0; $i < count($f); $i++) {
+      $Facet->$f[$i] = $f[$i + 1];
       $i++;
     }
 
     return $Facet;
   }
 
-  function reset(){
+  function reset()
+  {
     $this->q = "";
     $this->fq = "";
     $this->wt = "json";
@@ -273,6 +311,6 @@ class Query extends HttpRequest{
     $this->hl = "";
     $this->hlField = "";
     $this->hlQ = "";
+    $this->jsonFacet = null;
   }
 }
-?>
