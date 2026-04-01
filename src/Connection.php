@@ -19,7 +19,7 @@
 namespace Solr;
 
 use \stdClass;
-
+#[\AllowDynamicProperties]
 class Connection{
 
 	private $url;

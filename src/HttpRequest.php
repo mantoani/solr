@@ -51,7 +51,7 @@
 */
 
 namespace Solr;
-
+#[\AllowDynamicProperties]
 class HttpRequest {
 
     private $method, $url, $data = false;
