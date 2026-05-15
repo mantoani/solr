@@ -46,7 +46,7 @@ class Batch extends Connection
 
 		if ($success) {
 			$exec =
-				'curl -X \'' . $this->url . '/update/?commit=true\' -H \'Content-type:application/json\' --data-binary @' . $path;
+				'curl -X POST \'' . $this->url . '/update/?commit=true\' -H \'Content-type:application/json\' --data-binary @' . $path;
 
 			$response = shell_exec($exec);
 
