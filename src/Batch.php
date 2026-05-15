@@ -18,41 +18,41 @@
 
 namespace Solr;
 
-class Batch extends Connection{
+class Batch extends Connection
+{
 
-  var $url;
+	var $url;
 
-	function __construct($url){
+	function __construct($url)
+	{
 		$this->url = $url;
 	}
 
-	function toArray(){
+	function toArray()
+	{
 		return array($this);
 	}
 
-  function index($docs, $path){
-    $content = json_encode($docs);
-		if(!file_exists($path)){
+	function index($docs, $path)
+	{
+		$content = json_encode($docs);
+		if (!file_exists($path)) {
 			mkdir($path, 0755, true);
 		}
-		$path = $path."/batch.json";
+		$path = $path . "/batch.json";
 		$fopen = fopen($path, 'w+');
-    $success = fwrite($fopen, $content);
+		$success = fwrite($fopen, $content);
 		fclose($fopen);
 
-		if($success){
-			$exec = 
-			'curl -X -POST \''.$this->url.'/update/?commit=true\' -H \'Content-type:application/json\' --data-binary @'.$path;
-      
+		if ($success) {
+			$exec =
+				'curl -X \'' . $this->url . '/update/?commit=true\' -H \'Content-type:application/json\' --data-binary @' . $path;
+
 			$response = shell_exec($exec);
 
 			return json_decode($response);
 		}
 
 		return false;
-  }
-
-
+	}
 }
-
-?>
