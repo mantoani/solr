@@ -49,7 +49,11 @@ class Query extends HttpRequest
   var $groupOffset;
   var $groupSort;
   var $jsonFacet;
-
+  var $defType;
+  var $qf;
+  var $pf;
+  var $bq;
+  var $mm;
 
   function __construct($solrUrl)
   {
@@ -71,6 +75,11 @@ class Query extends HttpRequest
   {
     $url = $this->solrUrl . "/select/";
     $url .= $this->q();
+    $url .= $this->defType();
+    $url .= $this->qf();
+    $url .= $this->pf();
+    $url .= $this->bq();
+    $url .= $this->mm();
     $url .= $this->fq();
     $url .= $this->sort();
     $url .= $this->start();
@@ -296,9 +305,60 @@ class Query extends HttpRequest
     return $Facet;
   }
 
+  function defType()
+  {
+    if (empty($this->defType)) {
+      return "";
+    }
+
+    return "&defType=" . urlencode($this->defType);
+  }
+
+  function qf()
+  {
+    if (empty($this->qf)) {
+      return "";
+    }
+
+    return "&qf=" . urlencode($this->qf);
+  }
+
+  function pf()
+  {
+    if (empty($this->pf)) {
+      return "";
+    }
+
+    return "&pf=" . urlencode($this->pf);
+  }
+
+  function bq()
+  {
+    if (empty($this->bq)) {
+      return "";
+    }
+
+    return "&bq=" . urlencode($this->bq);
+  }
+
+  function mm()
+  {
+    if (empty($this->mm)) {
+      return "";
+    }
+
+    return "&mm=" . urlencode($this->mm);
+  }
+
+
   function reset()
   {
     $this->q = "";
+    $this->defType = "";
+    $this->qf = "";
+    $this->pf = "";
+    $this->bq = "";
+    $this->mm = "";
     $this->fq = "";
     $this->wt = "json";
     $this->start = 0;
