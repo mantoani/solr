@@ -41,8 +41,10 @@ class Query extends HttpRequest
   var $pt;
   var $d;
   var $hl;
-  var $hlField;
-  var $hlQ;
+  var $hlFl;
+  var $hlSnippets;
+  var $hlFragSize;
+  var $hlMethod;
   var $group;
   var $groupField;
   var $groupLimit;
@@ -92,8 +94,10 @@ class Query extends HttpRequest
     $url .= $this->pt();
     $url .= $this->d();
     $url .= $this->hl();
-    $url .= $this->hlField();
-    $url .= $this->hlQ();
+    $url .= $this->hlFl();
+    $url .= $this->hlSnippets();
+    $url .= $this->hlFragSize();
+    $url .= $this->hlMethod();
     $url .= $this->jsonFacet();
 
     $Response = new parent("get", $url);
@@ -183,22 +187,37 @@ class Query extends HttpRequest
     return "&hl=" . urlencode($this->hl);
   }
 
-  function hlQ()
+  function hlFl()
   {
-    if (empty($this->hlQ)) {
+    if (empty($this->hlFl)) {
       return "";
     }
-
-    return "&hl.q=" . urlencode($this->hlQ);
+    return "&hl.fl=" . urlencode($this->hlFl);
   }
 
-  function hlField()
+  function hlSnippets()
   {
-    if (empty($this->hlField)) {
+    if (empty($this->hlSnippets)) {
       return "";
     }
 
-    return "&hl.field=" . urlencode($this->hlField);
+    return "&hl.snippets=" . urlencode($this->hlSnippets);
+  }
+
+  function hlFragSize()
+  {
+    if (empty($this->hlFragSize)) {
+      return "";
+    }
+    return "&hl.fragsize=" . urlencode($this->hlFragSize);
+  }
+
+  function hlMethod()
+  {
+    if (empty($this->hlMethod)) {
+      return "";
+    }
+    return "&hl.method=" . urlencode($this->hlMethod);
   }
 
   function wt()
